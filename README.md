@@ -135,7 +135,7 @@ sudo apt update
 #### ✨ Some notes on this installer / Prerequisites
 
 - Recommend installing SDDM. Apart from GDM and SDDM, other Login Managers may not launch `Hyprland`.
-    - yprland can be launched through tty by typing:
+    - Hyprland can be launched through tty by typing:
         - Prior to Hyprland v0.53.x `Hyprland` or `hyprland`
         - After Hyprland v0.53.x you must use `start-hyprland`
             - Otherwise will generate and error at start up.
