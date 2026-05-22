@@ -1,6 +1,6 @@
 # Hyprdebian
 
-`build_hypr.sh` is a Debian 13 installer and source builder for Hyprland and a practical Hyprland desktop stack. It installs Debian packages, enables the Debian repositories needed by the build, clones Hyprland projects under a build directory, builds them with CMake and Ninja, installs them into `/usr`, and creates user-level configuration for Hyprland, UWSM, optional desktop services, and selected helper tools.
+`debian13_hyprland_setup.sh` is a Debian 13 installer and source builder for Hyprland and a practical Hyprland desktop stack. It installs Debian packages, enables the Debian repositories needed by the build, clones Hyprland projects under a build directory, builds them with CMake and Ninja, installs them into `/usr`, and creates user-level configuration for Hyprland, UWSM, optional desktop services, and selected helper tools.
 
 The script is designed for Debian 13 Trixie. It is not a generic Ubuntu, Debian testing, or Debian unstable installer.
 
@@ -60,7 +60,7 @@ The script may:
 - Optionally enable `greetd.service`.
 - Optionally set the system default target to `graphical.target`.
 - Optionally move `/etc/greetd/config.toml` to `/etc/greetd/config.toml.original`.
-- Optionally adjust netplan files if netplan exists on the system.
+- Optionally adjust netplan files if the netplan package exists on the system.
 - Optionally add the current user to the `video` group for brightness control.
 
 ## Quick Start
@@ -68,7 +68,7 @@ The script may:
 Run as your normal user, not as root:
 
 ```bash
-./build_hypr.sh
+./debian13_hyprland_setup.sh
 ```
 
 The script will prompt for optional components, print the selected setup environment, and ask for confirmation before making the main changes.
@@ -76,16 +76,16 @@ The script will prompt for optional components, print the selected setup environ
 Do not run it with `sudo`:
 
 ```bash
-sudo ./build_hypr.sh
+sudo ./debian13_hyprland_setup.sh
 ```
 
-The script exits if it is run directly as root. It asks for sudo authentication when privileged actions are needed.
+The script exits if it is run directly as the root account. It asks for sudo authentication when privileged actions are needed.
 
 ## Non-Interactive Usage
 
 The script can be run non-interactively by exporting the supported variables before execution and setting `DISABLE_CONFIRM=true`.
 
-Example full install:
+Example of the complete installation:
 
 ```bash
 BUILD_DIR="$HOME/hyprdebian" \
@@ -101,10 +101,10 @@ THEME_PREF=dark \
 THUNAR_SETUP=true \
 TUIGREET_SETUP=true \
 WAYBAR_SETUP=true \
-./build_hypr.sh
+./debian13_hyprland_setup.sh
 ```
 
-Example minimal install:
+Example minimal installation:
 
 ```bash
 BUILD_DIR="$HOME/hyprdebian" \
@@ -120,7 +120,7 @@ THEME_PREF=none \
 THUNAR_SETUP=false \
 TUIGREET_SETUP=false \
 WAYBAR_SETUP=false \
-./build_hypr.sh
+./debian13_hyprland_setup.sh
 ```
 
 ## Configuration Variables
@@ -246,7 +246,7 @@ Projects are configured with:
 cmake -S . -B build -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
 ```
 
-The install libdir is set from `DEB_HOST_MULTIARCH` when available. The compiler is set to GCC 15 and G++ 15 unless `CC` or `CXX` are already exported.
+The installation libdir is set from `DEB_HOST_MULTIARCH` when available. The compiler is set to GCC 15 and G++ 15 unless `CC` or `CXX` are already exported.
 
 The build parallelism is based on physical CPU cores:
 
@@ -631,7 +631,7 @@ For `swaync`, the script installs `sway-notification-center`, enables `swaync.se
 
 The script is intended to be rerunnable.
 
-On rerun it should:
+On rerun the script should:
 
 - Reuse existing clones under `BUILD_DIR`.
 - Fetch updates where possible.
@@ -668,11 +668,11 @@ If inherited Cargo environment variables point to unwritable paths, the script f
 
 ### Git clone appears hung after receiving objects
 
-The script now skips a redundant fetch immediately after a fresh clone. Existing clones still fetch updates, but fetch failures are reported as warnings and the script continues with the local checkout when possible.
+The script now skips a redundant fetch immediately after a fresh clone. Existing clones still fetch updates, but fetch failures are reported as warnings, and the script continues with the local checkout when possible.
 
 ### Qt QML plugin CMake warnings
 
-Some Qt QML plugin warnings can appear while building `hyprpolkitagent`. They are warnings from Qt/CMake integration and do not necessarily indicate a failed install. Check the final build command exit status before treating them as fatal.
+Some Qt QML plugin warnings can appear while building `hyprpolkitagent`. They are warnings from Qt/CMake integration and do not necessarily indicate a failed installation. Check the final build command exit status before treating them as fatal.
 
 ### Existing `hyprland.conf`
 
@@ -683,8 +683,8 @@ This installer's generated Hyprland target is `~/.config/hypr/hyprland.lua`. An 
 Before committing script changes, run:
 
 ```bash
-bash -n build_hypr.sh
-shellcheck build_hypr.sh
+bash -n debian13_hyprland_setup.sh
+shellcheck debian13_hyprland_setup.sh
 ```
 
 The script should pass both checks.
@@ -693,14 +693,14 @@ The script should pass both checks.
 
 Expected tracked files:
 
-- `build_hypr.sh`
+- `debian13_hyprland_setup.sh`
 - `README.md`
 
 The source/build checkout directory `hyprdebian/` should not be committed.
 
 ## Commit Style
 
-Use conventional commit style for maintenance changes. Example:
+Use the conventional commit style for maintenance changes. Example:
 
 ```text
 chore: document Debian 13 Hyprland builder
